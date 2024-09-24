@@ -1,9 +1,16 @@
 <script setup>
 
+import searchTaskVue from "./components/searchTask.vue";
+
 </script>
 
 <template>
-  <div>
-    Jola mundo
-  </div>
+
+  <main class= " h-screen w-full bg-gray-200">
+    <searchTaskVue />
+
+    
+
+  </main>
+ 
 </template>
