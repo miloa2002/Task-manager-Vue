@@ -1,11 +1,9 @@
 <script setup>
 import { ref } from "vue";
-import searchTaskVue from "./components/SearchTask.vue"
+import searchTask from "./components/SearchTask.vue"
+import Modal from "./components/Modal.vue"
 
 const categories = ref(['ALL','PERSONAL','HOME','BUSINESS'])
-
-import searchTaskVue from "./components/searchTask.vue";
-import Modal from "./components/Modal.vue"
 
 const modal = ref(false)
 
@@ -22,7 +20,7 @@ const deleteModal = () => {
 <template>
 
   <main class= " h-screen w-full bg-gray-200">
-    <searchTaskVue />
+    <searchTask @show-modal="showModal" />
 
 
     <div class="container mx-auto">
@@ -35,7 +33,6 @@ const deleteModal = () => {
             <li 
             v-for="(item, index) in categories" 
             :key="index"
-            
             class=" cursor-pointer">{{ item }}</li>
            
           </ul>
@@ -49,8 +46,7 @@ const deleteModal = () => {
       </div>
 
     </div>
-    
-    <searchTaskVue @show-modal="showModal" />
+
   </main>
   <Modal :modal="modal" @delete-modal="deleteModal" />
 </template>
