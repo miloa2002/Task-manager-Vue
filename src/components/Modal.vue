@@ -18,13 +18,13 @@ defineProps({
                 <p @click="$emit('delete-modal')" class="text-2xl cursor-pointer">&times;</p>
             </div>
 
-            <div class="flex items-center gap-4">
-                <div class="w-1/2">
+            <div class="md:flex items-center gap-4">
+                <div class="md:w-1/2">
                     <label for="title" class="font-bold mb-2 block">Titulo</label>
                     <input class="outline-cyan-500 bg-gray-100 w-full p-2 rounded-md" type="text" id="title"
                         placeholder="Titulo de la tarea">
                 </div>
-                <div class="w-1/2">
+                <div class="md:w-1/2">
                     <label for="title" class="font-bold mb-2 block">Categoría</label>
                     <select class="outline-cyan-500 bg-gray-100 w-full p-2 rounded-md" name="title" id="title">
                         <option value="">--Categoría--</option>
