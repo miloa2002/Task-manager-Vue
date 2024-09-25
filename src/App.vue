@@ -2,11 +2,20 @@
 import { ref } from "vue";
 import searchTaskVue from "./components/SearchTask.vue"
 
-
-
 const categories = ref(['ALL','PERSONAL','HOME','BUSINESS'])
 
+import searchTaskVue from "./components/searchTask.vue";
+import Modal from "./components/Modal.vue"
 
+const modal = ref(false)
+
+const showModal = () => {
+  modal.value = true;
+}
+
+const deleteModal = () => {
+  modal.value = false;
+}
 
 </script>
 
@@ -39,13 +48,9 @@ const categories = ref(['ALL','PERSONAL','HOME','BUSINESS'])
 
       </div>
 
-
-
     </div>
     
-
-    
-
+    <searchTaskVue @show-modal="showModal" />
   </main>
- 
+  <Modal :modal="modal" @delete-modal="deleteModal" />
 </template>
