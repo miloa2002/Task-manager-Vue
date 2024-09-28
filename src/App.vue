@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import searchTask from "./components/SearchTask.vue"
+import Task from "./components/Task.vue";
 import Modal from "./components/Modal.vue"
 
 const categories = ref(['ALL', 'PERSONAL', 'HOME', 'BUSINESS'])
@@ -41,6 +42,15 @@ const selectMenu = (item) => {
         <div>
         </div>
       </div>
+    </div>
+    <div class="container mx-auto">
+      <div class="grid grid-cols-3 items-center gap-4">
+
+        <Task />
+
+      </div>
+      
+      
     </div>
   </main>
   <Modal :modal="modal" @delete-modal="deleteModal" />
