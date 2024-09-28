@@ -1,5 +1,4 @@
 <script setup>
-
 defineEmits(["show-modal"])
 
 </script>
