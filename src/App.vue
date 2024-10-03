@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import searchTask from "./components/SearchTask.vue"
 import Task from "./components/Task.vue";
 import Modal from "./components/Modal.vue"
@@ -19,6 +19,26 @@ const task = reactive({
   description: "",
   category: "",
   date: moment().format("DD/MM/YYYY")
+})
+
+watch(tasks, ()=>{
+  guardarLocalStorage()
+},{
+  deep:true
+})
+
+const guardarLocalStorage = () => {
+  localStorage.setItem('tasks', JSON.stringify(tasks.value))
+}
+
+onMounted(() => {
+
+  const tasksStorage = localStorage.getItem('tasks')
+  if (tasksStorage) {
+    tasks.value = JSON.parse(tasksStorage)
+    
+  } 
+   
 })
 
 
@@ -44,6 +64,8 @@ const addTask = () => {
     tasks.value[position] = {...task}
   }else{
     tasks.value.push({ ...task, id: uid() })
+    guardarLocalStorage()
+    
   }
 
   Object.assign(task, {
