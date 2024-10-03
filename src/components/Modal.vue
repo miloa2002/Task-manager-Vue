@@ -1,9 +1,5 @@
 <script setup>
-import Task from './Task.vue';
-
-
 const emit = defineEmits(["delete-modal", "add-task", "update:title", "update:description", "update:category"])
-
 
 const prospTask = defineProps({
     modal: {
