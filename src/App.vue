@@ -1,6 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
-import searchTask from "./components/SearchTask.vue"
+import { computed, ref } from "vue";
 import Task from "./components/Task.vue";
 import Modal from "./components/Modal.vue"
 import { uid } from "uid";
@@ -12,6 +11,7 @@ const categories = ref(['ALL', 'PERSONAL', 'HOME', 'BUSINESS'])
 
 const modal = ref(false)
 const tasks = ref([])
+const searchText = ref("")
 
 const task = reactive({
   id: null,
@@ -19,26 +19,6 @@ const task = reactive({
   description: "",
   category: "",
   date: moment().format("DD/MM/YYYY")
-})
-
-watch(tasks, ()=>{
-  guardarLocalStorage()
-},{
-  deep:true
-})
-
-const guardarLocalStorage = () => {
-  localStorage.setItem('tasks', JSON.stringify(tasks.value))
-}
-
-onMounted(() => {
-
-  const tasksStorage = localStorage.getItem('tasks')
-  if (tasksStorage) {
-    tasks.value = JSON.parse(tasksStorage)
-    
-  } 
-   
 })
 
 
@@ -51,7 +31,6 @@ const deleteModal = () => {
 }
 
 const selectedCategory = ref("ALL")
-const filteredTasks = ref([])
 
 const selectMenu = (item) => {
   return selectedCategory.value = item
@@ -64,8 +43,6 @@ const addTask = () => {
     tasks.value[position] = {...task}
   }else{
     tasks.value.push({ ...task, id: uid() })
-    guardarLocalStorage()
-    
   }
 
   Object.assign(task, {
@@ -88,15 +65,29 @@ const updatedTask = (id) => {
   showModal()
 }
 
-const searchTaskValue = (text) => {
-  tasks.value.filter(t => t.title.includes(text.title))
-}
+const searchTaskValue = computed(() => {
+  if (searchText.value === "") {
+    return tasks.value;
+  } else {
+    return tasks.value.filter(t => t.title.includes(searchText.value));
+  }
+});
 
 </script>
 
 <template>
   <main class=" h-screen w-full bg-gray-200">
-    <searchTask :task="task" @search-task-value="searchTaskValue" @show-modal="showModal" />
+
+    <div class=" bg-white p-3 shadow-md">
+        <div class="container mx-auto  flex items-center gap-4">
+            <input v-model="searchText" placeholder="Buscar Tarea..." type="text" class=" w-full border-cyan-500 border outline-none rounded-md p-2 text-gray-500">
+            <div class="cursor-pointer flex justify-center items-center gap-2 bg-cyan-400 p-2 text-white rounded-full" @click="showModal">
+                <span>+</span>
+                <button>Add</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container mx-auto">
       <h2 class="font-bold text-2xl mt-3">Your Notes</h2>
       <div>
@@ -112,7 +103,7 @@ const searchTaskValue = (text) => {
     </div>
     <div class="container mx-auto">
       <div class="grid grid-cols-3 items-center gap-4">
-        <Task @updated-task="updatedTask" @delete-task="deleteTask" v-for="task in tasks" :key="task.id" :task="task" />
+        <Task @updated-task="updatedTask" @delete-task="deleteTask" v-for="task in searchTaskValue" :key="task.id" :task="task" />
       </div>
     </div>
   </main>
