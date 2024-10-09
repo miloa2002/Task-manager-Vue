@@ -7,7 +7,7 @@ import { reactive } from 'vue';
 import moment from "moment";
 
 
-const categories = ref(['ALL', 'PERSONAL', 'HOME', 'BUSINESS'])
+const categories = ref(['ALL', 'PERSONAL', 'CASA', 'EMPRESA'])
 
 const modal = ref(false)
 const tasks = ref([])
@@ -33,7 +33,7 @@ const deleteModal = () => {
 const selectedCategory = ref("ALL")
 
 const selectMenu = (item) => {
-  return selectedCategory.value = item
+  selectedCategory.value = item
 }
 
 const addTask = () => {
@@ -82,13 +82,14 @@ const updatedTask = (id) => {
   showModal()
 }
 
-const searchTaskValue = computed(() => {
-  if (searchText.value === "") {
-    return tasks.value;
-  } else {
-    return tasks.value.filter(t => t.title.includes(searchText.value));
-  }
-});
+
+const filteredTask = computed(() => {
+  const categoryFilteredTasks = selectedCategory.value === "ALL" ? tasks.value : tasks.value.filter(e => e.category.toLowerCase() === selectedCategory.value.toLowerCase())
+
+  return searchText.value === "" 
+    ? categoryFilteredTasks 
+    : categoryFilteredTasks.filter(task => task.title.toLowerCase().includes(searchText.value.toLowerCase()));
+})
 
 </script>
 
@@ -120,7 +121,7 @@ const searchTaskValue = computed(() => {
     </div>
     <div class="container mx-auto">
       <div class="grid grid-cols-3 items-center gap-4">
-        <Task @updated-task="updatedTask" @delete-task="deleteTask" v-for="task in searchTaskValue" :key="task.id" :task="task" />
+        <Task @updated-task="updatedTask" @delete-task="deleteTask" v-for="task in filteredTask" :key="task.id" :task="task" />
       </div>
     </div>
   </main>

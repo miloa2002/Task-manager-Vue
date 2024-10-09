@@ -30,7 +30,6 @@ const changeCategory = computed(() => {
             {{ task.category }}
         </div>
         <div class="flex items-center gap-3">
-            <input type="checkbox" class="transform scale-150" style="width: 14px; height: 14px;">
             <img @click="$emit('updated-task', task.id)" class="cursor-pointer" src="../assets/edit-icon.png" alt="">
             <img @click="$emit('delete-task', task.id)" class="cursor-pointer" src="../assets/delete-icon.png" alt="">
 
