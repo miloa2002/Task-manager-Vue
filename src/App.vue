@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch,onMounted } from "vue";
 import Task from "./components/Task.vue";
 import Modal from "./components/Modal.vue"
 import { uid } from "uid";
@@ -53,6 +53,23 @@ const addTask = () => {
     date: moment().format("DD/MM/YYYY")
   })
 }
+
+watch(tasks, () =>{
+  guardarLocalStorage()
+}, {
+  deep:true
+})
+
+const guardarLocalStorage = () => {
+  localStorage.setItem('tasks', JSON.stringify(tasks.value))
+}
+
+onMounted(() => {
+    const tasksStorage = localStorage.getItem('tasks')
+    if (tasksStorage) {
+      tasks.value = JSON.parse(tasksStorage)
+    }
+})
 
 const deleteTask = (id) => {
   tasks.value = tasks.value.filter(task => task.id !== id)
